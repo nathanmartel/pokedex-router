@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-// import { capitalizeFirstLetter, evolvesFrom } from './api.js';
+import { capitalizeFirstLetter, evolvesFrom } from './api.js';
 
 export default class PokeItem extends Component {
     render() {
@@ -10,7 +10,7 @@ export default class PokeItem extends Component {
             <img src={this.props.pokemon.url_image} alt={this.props.pokemon.pokemon} />
         </div>
         <div className="card-text">
-            <h2><a href={this.props.pokemon.pokedex}></a></h2>
+            <h2><a href={this.props.pokemon.pokedex}>{this.props.pokemon.pokemon}</a></h2>
             <p>Evolves from {this.props.pokemon.evolves_from_species_id}</p>
         </div>
         <div className="card-table">

@@ -13,7 +13,6 @@ export default class Detail extends Component {
   async getPokeItem() {
     // Build URL for use with API request
     const dataURL = 'https://alchemy-pokedex.herokuapp.com/api/pokedex';
-    // Grab everything in URL after # with built-in hash property and remove hashtag.
     const myQueryString = `pokemon=${this.props.match.params.charId}`;
     const hashedURL = `${dataURL}?${myQueryString}`;
     console.log('Requesting URL: ', hashedURL);
@@ -29,10 +28,8 @@ export default class Detail extends Component {
   
     render() {
         const character = this.state.character;
-    return <ul className='data-list'>
-
-        <PokeItem pokemon={ character } /> 
-    
-    </ul>
+        return <ul className='data-list'>
+            <PokeItem pokemon={ character } /> 
+        </ul>
     }
 }

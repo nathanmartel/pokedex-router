@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 
-export default class Header extends Component {
-
-// this is in progress
+export default class SearchBar extends Component {
   
   render() {
     return (

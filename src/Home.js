@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import PokeList from './PokeList.js';
 import PokeItem from './PokeItem.js';
+import { Link } from 'react-router-dom';
 import Pagination from './Pagination.js';
 import SearchBar from './SearchBar.js';
 import request from 'superagent';
@@ -21,10 +21,8 @@ export default class Home extends Component {
   async getPokeList() {
     // Build URL for use with API request
     const dataURL = 'https://alchemy-pokedex.herokuapp.com/api/pokedex';
-    // Grab everything in URL after # with built-in hash property and remove hashtag.
-    let myQueryString = window.location.hash.slice(1);
-    // console.log('myQueryString: ', myQueryString);
-    // i.e.: myQueryString = 'page=3&perPage=2';
+    // let myQueryString = this.state.match.params;
+    let myQueryString = '';
     const hashedURL = `${dataURL}?${myQueryString}`;
     console.log('Requesting URL: ', hashedURL);
     const data = await request.get(hashedURL);
@@ -35,19 +33,6 @@ export default class Home extends Component {
   async componentDidMount() {
     console.log('Mounting Home');
     this.getPokeList();
-    window.addEventListener("hashchange", () => {
-      // Get changed parameters
-      const myQueryString = window.location.hash.slice(1);
-      const myParams = new URLSearchParams(myQueryString);
-      const myParamsPage = Number(myParams.get('page'));
-      const myParamsPerPage = Number(myParams.get('perPage'));
-      // Update state based on changed parameters
-      this.setState({ page: myParamsPage });
-      this.setState({ numberOfResultsPerPage: myParamsPerPage });
-      this.setState({ maxPages: Math.ceil(this.props.numberOfResults / this.props.numberOfResultsPerPage) })
-
-      this.getPokeList();
-    });
   }
    
   updatePage(numberOfPages) {
@@ -62,30 +47,10 @@ export default class Home extends Component {
     window.location.hash = myParams.toString();
   }
 
-  setInitialParams() {
-    const myQueryString = window.location.hash.slice(1);
-    const myParams = new URLSearchParams(myQueryString);
-    myParams.set('page', this.state.page);
-    myParams.set('perPage', this.state.numberOfResultsPerPage);
-    window.location.hash = myParams.toString();
-  }
-
-  handleSubmit = (e) => {
-    const form = document.getElementById('myForm');
+  handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(form);
-
-    const myQueryString = window.location.hash.slice(1);
-    const myParams = new URLSearchParams(myQueryString);
-
-    //myParams.set('type', formData.get('type'));
-    const mySearch = formData.get('search');
-    myParams.set('pokemon', formData.get('search'));
-    console.log('mySearch', mySearch);
-    // Reset to page 1 as this is new search and
-    myParams.set('page', 1);
-
-    window.location.hash = myParams.toString();
+    const data = await request.get(`https://alchemy-pokedex.herokuapp.com/api/pokedex?pokemon=${this.state.searchInput}`);
+    this.setState({pokeData: data.body.results});
   }
 
   handleChange = (e) => { 
@@ -106,8 +71,16 @@ export default class Home extends Component {
       numberOfResultsPerPage = {this.state.numberOfResultsPerPage}
       maxPages = {this.state.maxPages}
       updatePage = {this.updatePage} 
-      /> 
-      <PokeList pokeData={this.state.pokeData} /> 
+      />
+      <div class="menu">
+        <Link to="/">Home</Link>
+        <span> | </span>
+        <Link to="/About">About</Link>
+      </div>
+      <ul className='data-list'>
+        { this.state.pokeData.map(item => <PokeItem pokemon={ item } />) }; 
+      </ul>
+      {/* <PokeList pokeData={this.state.pokeData} />  */}
     
     </div>
     }

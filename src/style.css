@@ -52,3 +52,7 @@ header .img-container {
     display: inline-block;
     margin: 0 10px;
 }
+
+.menu {
+    text-align: center;
+}
