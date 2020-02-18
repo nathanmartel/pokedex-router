@@ -9,10 +9,11 @@ import request from 'superagent';
 
 export default class Home extends Component {
   state = { 
+    dataURL: 'https://alchemy-pokedex.herokuapp.com/api/pokedex',
     pokeData: [],
     page: 1,
     numberOfResult: 0,
-    numberOfResultsPerPage: 10,
+    numberOfResultsPerPage: 20,
     maxPages: 0,
     searchInput: '',
     searchType: 'pokemon',
@@ -20,16 +21,21 @@ export default class Home extends Component {
 
   
   async getPokeList() {
+    
     // Build URL for use with API request
-    const dataURL = 'https://alchemy-pokedex.herokuapp.com/api/pokedex';
-    // let myQueryString = this.state.match.params;
-    let myQueryString = '';
-    let mySearch = this.state.searchInput;
-    const hashedURL = `${dataURL}?${myQueryString}`;
+    const dataURL = this.state.dataURL;
+    // let myPage;
+    // if (this.state.match.params.pageNum !== undefined) {
+    //   myPage = this.state.match.params.pageNum }
+    //   else myPage = 1; 
+    const myQueryType = this.state.searchType;
+    const myQueryString = this.state.searchInput;
+    const hashedURL = `${dataURL}?${myQueryType}=${myQueryString}`;
     console.log('Requesting URL: ', hashedURL);
     const data = await request.get(hashedURL);
     this.setState({ pokeData: data.body.results });
     this.setState({ numberOfResults: data.body.count });
+    this.setState({ maxPages: Math.ceil(this.state.numberOfResults / this.state.numberOfResultsPerPage) });
   }
 
   async componentDidMount() {
@@ -51,13 +57,7 @@ export default class Home extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    const dataURL = 'https://alchemy-pokedex.herokuapp.com/api/pokedex';
-    const myQueryType = this.state.searchType;
-    const myQueryString = this.state.searchInput;
-    const hashedURL = `${dataURL}?${myQueryType}=${myQueryString}`;
-    console.log('Requesting URL: ', hashedURL);
-    const data = await request.get(hashedURL);
-    this.setState({ pokeData: data.body.results });
+    this.getPokeList();
     this.props.history.push(this.state.searchInput);
   }
 
@@ -67,7 +67,7 @@ export default class Home extends Component {
 
   handleRadioClick = (e) => { 
     this.setState({ searchType: e.target.value });
-    console.log(this.state.searchType);
+    console.log('Radio: ', e.target.value);
   }
   
     render() {

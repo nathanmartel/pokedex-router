@@ -39,7 +39,19 @@ header .img-container {
 }
 
 .searchBar input {
-    margin-right: 10px;
+    margin-right: 7px;
+}
+
+.searchBar .search-field {
+    margin-bottom: 20px;
+}
+
+.searchBar .radio-buttons label {
+    margin-right: 2em;
+}
+
+.searchBar .radio-buttons  {
+    margin: 10px;
 }
 
 .pagination {
@@ -52,6 +64,32 @@ header .img-container {
     display: inline-block;
     margin: 0 10px;
 }
+
+.pagination button {
+    position: relative;
+    /* height: 50px;
+    width: 50px; */
+    /* font-size: 2em; */
+    background-color: transparent;
+    border: none;
+    color: white;
+}
+
+.pagination button:hover {
+    color: #ffde00;
+    text-decoration: underline;
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+}
+
+.pagination button:disabled:hover {
+    color: white;
+    opacity: 0.5;
+    text-decoration: none;
+}
+
 
 .menu {
     text-align: center;

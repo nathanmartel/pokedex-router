@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-// import { capitalizeFirstLetter, evolvesFrom } from './api.js';
+// import { capitalizeFirstLetter } from './api.js';
+
 
 export default class PokeItem extends Component {
+    // Via https://stackoverflow.com/questions/1026069/how-do-i-make-the-first-letter-of-a-string-uppercase-in-javascript :)
+    capitalizeFirstLetter(string) {
+        console.log('string is', string)
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    
     render() {
     return <li>
         <Link to={`/item/${this.props.pokemon._id}`}>
@@ -11,7 +18,10 @@ export default class PokeItem extends Component {
         </div>
         <div className="card-text">
             <h2>{this.props.pokemon.pokemon}</h2>
-            <p>Evolves from {this.props.pokemon.evolves_from_species_id}</p>
+        </div>
+        <div className="card-type">
+            <p className={ `type-1 ${this.props.pokemon.type_1}` }>{this.props.pokemon.type_1}</p> 
+            <p className={ `type-2 ${this.props.pokemon.type_2}` }>{this.props.pokemon.type_2}</p>
         </div>
         <div className="card-table">
             <table>

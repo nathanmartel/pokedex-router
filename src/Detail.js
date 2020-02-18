@@ -7,6 +7,7 @@ import request from 'superagent';
 export default class Detail extends Component {
   state = { 
     pokeData : {},
+    charId : '',
   };
 
   
