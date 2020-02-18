@@ -56,3 +56,10 @@ header .img-container {
 .menu {
     text-align: center;
 }
+
+.about {
+    text-align: center;
+    font-size: 1.8em;
+    width: 70%;
+    margin: 0 auto;
+}

@@ -10,9 +10,28 @@ export default class SearchBar extends Component {
             id="search" 
             name="search" 
             type="text" 
-            onChange={this.props.onChange}
-            value={this.props.searchInput}>
-          </input>
+            onChange={this.props.onSearchChange}
+            value={this.props.searchInput} />
+          
+          {/* <label>By Name
+          <input
+            id="radio-name"
+            name="type"
+            type="radio"
+            onClick={this.props.onRadioChange}
+            value="pokemon" 
+            defaultChecked />
+          </label>
+          
+          <label>By Attack
+            <input
+            id="radio-type"
+            name="type"
+            type="radio"
+            onClick={this.props.onRadioChange}
+            value="attack" />
+          </label> */}
+
           <button type="submit">Search</button>
         </form>
       </div>

@@ -15,6 +15,7 @@ export default class Home extends Component {
     numberOfResultsPerPage: 10,
     maxPages: 0,
     searchInput: '',
+    searchType: 'pokemon',
   };
 
   
@@ -23,6 +24,7 @@ export default class Home extends Component {
     const dataURL = 'https://alchemy-pokedex.herokuapp.com/api/pokedex';
     // let myQueryString = this.state.match.params;
     let myQueryString = '';
+    let mySearch = this.state.searchInput;
     const hashedURL = `${dataURL}?${myQueryString}`;
     console.log('Requesting URL: ', hashedURL);
     const data = await request.get(hashedURL);
@@ -44,26 +46,37 @@ export default class Home extends Component {
     const newPage = myParamsPage + numberOfPages;
     myParams.set('page', newPage);
     // Update URL and trigger hashchange event
-    window.location.hash = myParams.toString();
+    // window.location.hash = myParams.toString();
   }
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    const data = await request.get(`https://alchemy-pokedex.herokuapp.com/api/pokedex?pokemon=${this.state.searchInput}`);
-    this.setState({pokeData: data.body.results});
+    const dataURL = 'https://alchemy-pokedex.herokuapp.com/api/pokedex';
+    const myQueryType = this.state.searchType;
+    const myQueryString = this.state.searchInput;
+    const hashedURL = `${dataURL}?${myQueryType}=${myQueryString}`;
+    console.log('Requesting URL: ', hashedURL);
+    const data = await request.get(hashedURL);
+    this.setState({ pokeData: data.body.results });
+    this.props.history.push(this.state.searchInput);
   }
 
-  handleChange = (e) => { 
+  handleSearchChange = (e) => { 
     this.setState({ searchInput: e.target.value });
+  }
+
+  handleRadioClick = (e) => { 
+    this.setState({ searchType: e.target.value });
+    console.log(this.state.searchType);
   }
   
     render() {
     return <div>
-      {/* {this.setInitialParams()} */}
       <SearchBar 
           searchInput={this.state.searchInput} 
-          onChange={this.handleChange}
+          onSearchChange={this.handleSearchChange}
           onSubmit={this.handleSubmit} 
+          onRadioChange={this.handleRadioClick} 
         />
       <Pagination
       page = {this.state.page} 
@@ -72,13 +85,8 @@ export default class Home extends Component {
       maxPages = {this.state.maxPages}
       updatePage = {this.updatePage} 
       />
-      <div class="menu">
-        <Link to="/">Home</Link>
-        <span> | </span>
-        <Link to="/About">About</Link>
-      </div>
       <ul className='data-list'>
-        { this.state.pokeData.map(item => <PokeItem pokemon={ item } />) }; 
+        { this.state.pokeData.map(item => <PokeItem pokemon={item} key={item._id} />) } 
       </ul>
       {/* <PokeList pokeData={this.state.pokeData} />  */}
     

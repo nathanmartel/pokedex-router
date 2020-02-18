@@ -6,18 +6,19 @@ import request from 'superagent';
 
 export default class Detail extends Component {
   state = { 
-    character : {},
+    pokeData : {},
   };
 
   
   async getPokeItem() {
     // Build URL for use with API request
     const dataURL = 'https://alchemy-pokedex.herokuapp.com/api/pokedex';
-    const myQueryString = `pokemon=${this.props.match.params.charId}`;
-    const hashedURL = `${dataURL}?${myQueryString}`;
+    const myQueryString = `${this.props.match.params.charId}`;
+    const hashedURL = `${dataURL}/${myQueryString}`;
+    console.log('charId is: ', this.props.match.params.charId);
     console.log('Requesting URL: ', hashedURL);
     const data = await request.get(hashedURL);
-    this.setState({ character: data.body.results[0] });
+    this.setState({ pokeData: data.body });
   }
 
   async componentDidMount() {
@@ -27,9 +28,8 @@ export default class Detail extends Component {
    
   
     render() {
-        const character = this.state.character;
         return <ul className='data-list'>
-            <PokeItem pokemon={ character } /> 
+            <PokeItem pokemon={ this.state.pokeData } /> 
         </ul>
     }
 }
